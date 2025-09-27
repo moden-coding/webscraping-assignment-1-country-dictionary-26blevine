@@ -1,11 +1,29 @@
+
 import requests
+
 from bs4 import BeautifulSoup
 
 def build_country_dict(soup):
-    pass
+    country_dict = {}
+    all_countries = soup.find_all("div", class_="country")
 
-    
-    
+    for country in all_countries:
+
+        name = country.find("h3", class_="country-name").text.strip()
+        capital = country.find("span", class_="country-capital").text.strip()
+        population = country.find("span", class_="country-population").text.strip()
+        area = country.find("span", class_="country-area").text.strip()
+
+        #print(f"name: {name}, capital: {capital}, population: {population}, area: {area}")
+
+        country_dict[name] = {
+            "Population": int(population),
+            "Area": float(area),
+            "Capital": capital
+        }
+    #print(f"{name}: {country_dict[name]}")
+
+    return country_dict
 
 
 if __name__ == "__main__":
@@ -14,7 +32,6 @@ if __name__ == "__main__":
     soup = BeautifulSoup(resp.text, "html.parser")
     
     
-    # build_country_dict(soup)
     data = build_country_dict(soup)
     
     
